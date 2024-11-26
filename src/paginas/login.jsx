@@ -14,7 +14,7 @@ const Login = () => {
     e.preventDefault();
     try {
       if (username === "" || password === "") {
-        console("Complete los campos", "warning");
+        console("Complete los campos ", "warning");
         return;
       }
       await axios
@@ -60,12 +60,12 @@ const Login = () => {
               <div className="login-box">
                 <div className="login-form">
                   <div className="login-welcome">
-                    Welcome back, <br />
-                    Please login to your Max admin account.
+                    BIENVENIDO A LA APP DE BIENES RAICES, <br />
+                    Por favor ingresar con su cuenta 
                   </div>
                   <div className="mb-3">
                     <label className="form-label" htmlFor="uname">
-                      Username
+                      Usuario
                     </label>
                     <input
                       type="text"
@@ -79,10 +79,10 @@ const Login = () => {
                   <div className="mb-3">
                     <div className="d-flex justify-content-between">
                       <label className="form-label" htmlFor="pwd-input">
-                        Password
+                        Contraseña
                       </label>
                       <a href="/forgot-password" className="btn-link ml-auto">
-                        Forgot password?
+                        Olvidaste tu contraseña?
                       </a>
                     </div>
                     <input
@@ -108,7 +108,7 @@ const Login = () => {
                         className="login-icon"
                         alt="Login with Google"
                       />
-                      Login with Google
+                      Ingresar con Google
                     </button>
                     <button type="submit" className="btn">
                       {" "}
@@ -117,13 +117,13 @@ const Login = () => {
                         className="login-icon"
                         alt="Login with Facebook"
                       />
-                      Login with Facebook
+                      Ingresa con Facebook
                     </button>
                   </div>
 
                   <div className="login-form-footer">
                     <div className="additional-link">
-                      Don't have an account? <a href="/signup">Signup</a>
+                      No tienes una cuenta? <a href="/signup">Registrarse</a>
                     </div>
                   </div>
                 </div>
