@@ -1,22 +1,21 @@
-import React from "react"
-import sidebar from "./sidebar"
-import header from "./header"
-import script from "./script"
-import footer from "./footer"
-import wrapper from "./wrapper"
+import React from "react";
+import Sidebar from "../plantilla/sidebar";
+import Header from "../plantilla/header";
+import Script from "../plantilla/script";
+import Footer from "../plantilla/footer";
+import Wrapper from "../plantilla/wrapper";
 
-function principal(){
+function Principal() {
     return (
-        <React.StrictMode>
-            <div className="wrapper">
-                <sidebar></sidebar>
-                <header></header>
-                <script></script>
-                <footer></footer>
-                <wrapper></wrapper>
-            </div>
-        </React.StrictMode>
-    )
+    <React.StrictMode>
+        <Wrapper>
+        <Sidebar />
+        <Header />
+        <Footer />
+        <Script />
+        </Wrapper>
+    </React.StrictMode>
+    );
 }
 
-export default principal 
+export default Principal;
