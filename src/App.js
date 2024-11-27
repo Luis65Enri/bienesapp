@@ -1,9 +1,9 @@
 import './App.css';
-import Login from './paginas/login';
+import principal from './componentes/plantilla/principal';
 
 function App() {
   return (
-    <Login />
+    <principal />
   );
 }
 

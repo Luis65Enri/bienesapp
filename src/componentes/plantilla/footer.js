@@ -1,14 +1,15 @@
-import React from "react"
+import React from "react";
 
-return (
-  <di>
-    {/* App Footer start */}
-    <div className="app-footer">
-      <span>© Bootstrap Gallery 2023</span>
+const Footer = () => {
+  return (
+    <div>
+      {/* App Footer start */}
+      <div className="app-footer">
+        <span>© Bootstrap Gallery 2023</span>
+      </div>
+      {/* App Footer end */}
     </div>
-    {/* App footer end */}
-  </di>
-)
+  );
+};
 
-export default footer
-
+export default Footer;
