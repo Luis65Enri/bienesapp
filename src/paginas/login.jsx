@@ -1,55 +1,74 @@
 import axios from "axios";
-import React, { useState } from "react";
-
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Servidor,
   UsuarioIniciarSesion,
 } from "../componentes/configuracion/apiUrls";
+import { AuthContext } from "../componentes/contexto/Autenticacion";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { login } = useContext(AuthContext); // Usa el contexto
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
     try {
       if (username === "" || password === "") {
-        console("Complete los campos", "warning");
+        console.log("Complete los campos", "warning");
         return;
       }
-      await axios
-        .post(Servidor + UsuarioIniciarSesion, {
-          correo_electronico_usuario: username,
-          contraseña_usuario: password,
-        })
-        .then(async (data) => {
-          const json = data.data;
-          console.log(data.data);
-          try {
-            var usuario = json.Usuario;
-            console.log(
-              "Bienvenido(a) " + usuario.nombre,
-              "success"
-            );
-          } catch (error) {
-            console.error(error);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          if (Array.isArray(error.response.data)) {
-            error.response.data.msj.forEach((f) => {
-              console.log("Campo: " + f.campo + ". " + f.msj, "warning");
-            });
-          } else {
-            console.log(error.response.data.error, "warning");
-          }
-        });
+  
+      console.log("Enviando credenciales:", {
+        correo_electronico_usuario: username,
+        contraseña_usuario: password,
+      });
+  
+      const response = await axios.post(Servidor + UsuarioIniciarSesion, {
+        correo_electronico_usuario: username,
+        contraseña_usuario: password,
+      });
+  
+      console.log("Respuesta del servidor:", response.data);
+  
+      // Asegúrate de que existe la clave 'usuario' en la respuesta
+      if (!response.data.usuario) {
+        console.log("Error: No se encontró el usuario en la respuesta.");
+        return;
+      }
+  
+      const usuario = response.data.usuario; // Accede correctamente al usuario
+      console.log("Bienvenido(a), " + usuario.nombre);
+  
+      // Guarda la información del usuario en el contexto
+      login(usuario);
+  
+      // Navega a la página principal
+      navigate("/PageHome");
     } catch (error) {
-      console.log("Error:", error);
-      console.log("Error en la petión", "error");
+      console.error("Error en el manejo de autenticación:", error);
+  
+      if (error.response?.data) {
+        console.log("Respuesta de error del servidor:", error.response.data);
+  
+        if (Array.isArray(error.response.data.msj)) {
+          error.response.data.msj.forEach((f) =>
+            console.log("Campo: " + f.campo + ". " + f.msj, "warning")
+          );
+        } else {
+          console.log(error.response.data.error, "warning");
+        }
+      } else {
+        console.log("Error desconocido al realizar la petición.", "error");
+      }
     }
   };
+  
+  
+  
   return (
     <div className="container">
       <div className="row">
