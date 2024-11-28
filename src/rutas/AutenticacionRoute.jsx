@@ -1,12 +1,15 @@
+import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { useContextUsuario } from "../componentes/contexto/usuario/useContext";
-import { mostrarAlertaError } from "../componentes/alerts/sweetAlert";
+import { useContextUsuario } from "../componentes/contexto/usuario/UsuarioContext";
 
 export const AutenticacionRoute = () => {
-    const { usuario, token} = useContextUsuario();
-    if (!token) {
-        mostrarAlertaError("Debes estar logeado para acceder a esta ruta");
-        return <Navigate to="/login" />;
-    }
-    return <Outlet></Outlet>; 
+  const { usuario } = useContextUsuario();
+
+  if (!usuario || !usuario.token) {
+    // Si el usuario no está autenticado, redirigir a la página de login
+    return <Navigate to="/login" />;
+  }
+
+  // Si el usuario está autenticado, renderizar el contenido de la ruta protegida
+  return <Outlet />;
 };

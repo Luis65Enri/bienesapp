@@ -1,9 +1,13 @@
-import './App.css';
-import principal from './componentes/plantilla/principal';
+import { RouterProvider } from 'react-router-dom';
+import UsuarioState from './componentes/contexto/usuario/UsuarioState';
+import { routes } from './rutas/routes';
 
 function App() {
   return (
-    <principal />
+    <UsuarioState>
+      <RouterProvider router={routes}>
+      </RouterProvider>
+    </UsuarioState>
   );
 }
 
