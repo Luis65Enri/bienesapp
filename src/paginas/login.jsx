@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useContextUsuario } from "../componentes/contexto/usuario/UsuarioContext";
-
+import { mostraAlerta } from "../componentes/alerts/sweetAlert";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -60,21 +60,23 @@ const Login = () => {
     e.preventDefault();
     try {
       if (username === "" || password === "") {
-        console.log("Complete los campos", "warning");
+        mostraAlerta("Complete los campos", "warning");
         return;
       }
-      await axios.post('http://localhost:3003/api/usuarios/login', {
-        correo_electronico_usuario: username,
-            contraseña_usuario: password,
-      })
+      await axios
+        .post("http://localhost:3003/api/usuarios/login", {
+          correo_electronico_usuario: username,
+          contraseña_usuario: password,
+        })
         .then(async (data) => {
           const json = data.data;
           console.log(data.data);
           try {
             var usuario = json.Usuario;
             var token = json.Token;
-            console.log(
-              "Bienvenido(a)"
+            mostraAlerta(
+              "Bienvenido(a) " + usuario.nombre,
+              "success"
             );
             await setLogin({ usuario: usuario, token: token });
             navigate("/app/home");
@@ -86,17 +88,18 @@ const Login = () => {
           console.log(error);
           if (Array.isArray(error.response.data)) {
             error.response.data.msj.forEach((f) => {
-              console.log("Campo: " + f.campo + ". " + f.msj, "warning");
+              mostraAlerta("Campo: " + f.campo + ". " + f.msj, "warning");
             });
           } else {
-            console.log(error.response.data.error, "warning");
+            mostraAlerta(error.response.data.error, "warning");
           }
         });
     } catch (error) {
       console.log("Error:", error);
-      console.log("Error en la petión", "error");
+      mostraAlerta("Error en la petición", "error");
     }
   };
+
   return (
     <div className="container">
       <div className="row">
@@ -147,33 +150,33 @@ const Login = () => {
                       Login
                     </button>
                   </div>
-                  <div className="login-form-actions">
-                    <button type="button" className="btn">
-                      <img
-                        src="/public/max/design/assets/images/google.svg"
-                        className="login-icon"
-                        alt="Login with Google"
-                      />
-                      Ingresar con Google
-                    </button>
-                    <button type="button" className="btn">
-                      <img
-                        src="/public/max/design/assets/images/facebook.svg"
-                        className="login-icon"
-                        alt="Login with Facebook"
-                      />
-                      Ingresa con Facebook
-                    </button>
-                  </div>
-
-                  <div className="login-form-footer">
-                    <div className="additional-link">
-                      ¿No tienes una cuenta? <a href="*">Registrarse</a>
-                    </div>
-                  </div>
                 </div>
               </div>
             </form>
+            <div className="login-form-actions">
+              <button type="button" className="btn">
+                <img
+                  src="/public/max/design/assets/images/google.svg"
+                  className="login-icon"
+                  alt="Login with Google"
+                />
+                Ingresar con Google
+              </button>
+              <button type="button" className="btn">
+                <img
+                  src="/public/max/design/assets/images/facebook.svg"
+                  className="login-icon"
+                  alt="Login with Facebook"
+                />
+                Ingresa con Facebook
+              </button>
+            </div>
+
+            <div className="login-form-footer">
+              <div className="additional-link">
+                ¿No tienes una cuenta? <a href="*">Registrarse</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
