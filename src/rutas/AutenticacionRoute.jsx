@@ -1,15 +1,10 @@
-import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useContextUsuario } from "../componentes/contexto/usuario/UsuarioContext";
 
-export const AutenticacionRoute = () => {
-  const { usuario } = useContextUsuario();
-
-  if (!usuario || !usuario.token) {
-    // Si el usuario no está autenticado, redirigir a la página de login
+export const AutenticacionRoute = ({ children }) => {
+  const { token, usuario } = useContextUsuario();
+  if (!token) {
     return <Navigate to="/login" />;
   }
-
-  // Si el usuario está autenticado, renderizar el contenido de la ruta protegida
-  return <Outlet />;
+  return <Outlet></Outlet>;
 };

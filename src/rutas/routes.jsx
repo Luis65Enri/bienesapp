@@ -1,22 +1,19 @@
 import React from 'react';
-import {
-  Navigate,
-  Route,
-  createBrowserRouter,
-  createRoutesFromElements,
-} from "react-router-dom";
-import PageHome from "../componentes/plantilla/PageHome";
-import Login from "../paginas/login";
-import { AutenticacionRoute } from "./AutenticacionRoute";
+import { Navigate, Route, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
+import PageHome from '../componentes/plantilla/PageHome';
+import Login from '../paginas/login';
+import { AutenticacionRoute } from './AutenticacionRoute';
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route path="/login" element={<Login />} />
+      <Route path='/login' element={<Login />} />
+    
       <Route path="app/" element={<AutenticacionRoute />}>
+        
         <Route path="home" element={<PageHome />} />
       </Route>
-      <Route path="*" element={<Navigate to="/login" />} />
+      <Route path='*' element={<Navigate to="/login" />} />
     </Route>
   ),
   {

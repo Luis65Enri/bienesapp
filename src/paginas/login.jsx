@@ -1,16 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  Servidor,
-  UsuarioIniciarSesion,
-} from "../componentes/configuracion/apiUrls";
 import { useContextUsuario } from "../componentes/contexto/usuario/UsuarioContext";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { setLogin, setCerrarSesion } = useContextUsuario();
+  const { setLogin, setCerrarSesion } = useContextUsuario(); // Eliminamos setCerrarSesion para evitar cierre automático
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,49 +16,93 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+        if (username === "" || password === "") {
+            console.log("Complete los campos", "warning");
+            return;
+        }
+        const response = await axios.post('http://localhost:3003/api/usuarios/login', {
+            correo_electronico_usuario: username,
+            contraseña_usuario: password,
+        });
+
+        const data = response.data;
+
+        console.log("Datos de la respuesta recibidos del servidor:", data);
+
+        const usuario = data.usuario; 
+        const token = data.token; 
+
+        if (!usuario || !token) {
+            throw new Error("Datos de usuario o token no válidos");
+        }
+
+        console.log("Bienvenido(a) " + usuario.nombre);
+        console.log("Token:", token);
+
+        await setLogin({ usuario: usuario, token: token });
+
+        console.log("Redirigiendo a /app/home");
+        navigate('/app/home'); // Redirigir a la ruta deseada
+    } catch (error) {
+        console.log("Error en la autenticación:", error);
+        if (error.response && Array.isArray(error.response.data)) {
+            error.response.data.forEach((f) => {
+                console.log("Campo: " + f.campo + ". " + f.msj, "warning");
+            });
+        } else {
+            console.log(
+                error.response ? error.response.data.error : "Error en la petición"
+            );
+        }
+    }
+  };
+  const handleSubmit2 = async (e) => {
+    e.preventDefault();
+    try {
       if (username === "" || password === "") {
         console.log("Complete los campos", "warning");
         return;
       }
-      const response = await axios.post(Servidor + UsuarioIniciarSesion, {
+      await axios.post('http://localhost:3003/api/usuarios/login', {
         correo_electronico_usuario: username,
-        contraseña_usuario: password,
-      });
-
-      const data = response.data;
-      const usuario = data.usuario;
-      const token = data.token;
-
-      console.log("Bienvenido(a) " + usuario.nombre, "success");
-      console.log("Token:", token);
-
-      // Asegúrate de que setLogin esté funcionando correctamente
-      await setLogin({ usuario: usuario, token: token });
-
-      // Confirmar la navegación
-      console.log("Redirigiendo a /app/home");
-      navigate("/app/home");
-    } catch (error) {
-      console.log("Error en la autenticación:", error);
-      if (error.response && Array.isArray(error.response.data)) {
-        error.response.data.forEach((f) => {
-          console.log("Campo: " + f.campo + ". " + f.msj, "warning");
+            contraseña_usuario: password,
+      })
+        .then(async (data) => {
+          const json = data.data;
+          console.log(data.data);
+          try {
+            var usuario = json.Usuario;
+            var token = json.Token;
+            console.log(
+              "Bienvenido(a)"
+            );
+            await setLogin({ usuario: usuario, token: token });
+            navigate("/app/home");
+          } catch (error) {
+            console.error(error);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (Array.isArray(error.response.data)) {
+            error.response.data.msj.forEach((f) => {
+              console.log("Campo: " + f.campo + ". " + f.msj, "warning");
+            });
+          } else {
+            console.log(error.response.data.error, "warning");
+          }
         });
-      } else {
-        console.log(
-          error.response ? error.response.data.error : "Error en la petición",
-          "warning"
-        );
-      }
+    } catch (error) {
+      console.log("Error:", error);
+      console.log("Error en la petión", "error");
     }
   };
-
   return (
     <div className="container">
       <div className="row">
         <div className="col-sm-12">
           <div className="login-container">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit2}>
               <div className="login-box">
                 <div className="login-form">
                   <div className="login-welcome">
@@ -128,7 +168,7 @@ const Login = () => {
 
                   <div className="login-form-footer">
                     <div className="additional-link">
-                      ¿No tienes una cuenta? <a href="/signup">Registrarse</a>
+                      ¿No tienes una cuenta? <a href="*">Registrarse</a>
                     </div>
                   </div>
                 </div>
