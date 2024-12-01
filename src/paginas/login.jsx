@@ -1,91 +1,73 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { UsuarioIniciarSesion, Servidor } from "../componentes/configuracion/apiUrls";
+import {
+  Servidor,
+  UsuarioIniciarSesion,
+} from "../componentes/configuracion/apiUrls";
 import { useContextUsuario } from "../componentes/contexto/usuario/UsuarioContext";
 
-
-import axios from "axios";
-
-const UsuarioForm = () => {
-  const [form, setForm] = useState({
-    nombre_usuario: "",
-    apellido_usuario: "",
-    correo_electronico_usuario: "",
-    telefono_usuario: "",
-    genero_usuario: "",
-    contraseña: "",
-  });
-}
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const { setLogin, setCerrarSesion } = useContextUsuario();
+  const navigate = useNavigate();
+
   useEffect(() => {
     setCerrarSesion();
   }, [setCerrarSesion]);
-
-  const navigate = useNavigate();
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (username === "" || password === "") {
-        console("Complete los campos ", "warning");
+        console.log("Complete los campos", "warning");
         return;
       }
-      await axios
-        .post(Servidor + UsuarioIniciarSesion, {
-          correo_electronico_usuario: username,
-          contraseña_usuario: password,
-        })
-        .then(async (data) => {
-          const json = data.data;
-          console.log(data.data);
-          try {
-            var usuario = json.Usuario;
-            var token = json.token;
-            console.log(
-              "Bienvenido(a) " + usuario.nombre,
-              "success"
-            );
-            await setLogin({ usuario: usuario, token: token });
-            navigate("/app/home");
-            
-          } catch (error) {
-            console.error(error);
+      const response = await axios.post(Servidor + UsuarioIniciarSesion, {
+        correo_electronico_usuario: username,
+        contraseña_usuario: password,
+      });
 
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          if (Array.isArray(error.response.data)) {
-            error.response.data.msj.forEach((f) => {
-              console.log("Campo: " + f.campo + ". " + f.msj, "warning");
-            });
-          } else {
-            console.log(error.response.data.error, "warning");
-          }
-        });
+      const data = response.data;
+      const usuario = data.usuario;
+      const token = data.token;
+
+      console.log("Bienvenido(a) " + usuario.nombre, "success");
+      console.log("Token:", token);
+
+      // Asegúrate de que setLogin esté funcionando correctamente
+      await setLogin({ usuario: usuario, token: token });
+
+      // Confirmar la navegación
+      console.log("Redirigiendo a /app/home");
+      navigate("/app/home");
     } catch (error) {
-      console.log("Error:", error);
-      console.log("Error en la petión", "error");
+      console.log("Error en la autenticación:", error);
+      if (error.response && Array.isArray(error.response.data)) {
+        error.response.data.forEach((f) => {
+          console.log("Campo: " + f.campo + ". " + f.msj, "warning");
+        });
+      } else {
+        console.log(
+          error.response ? error.response.data.error : "Error en la petición",
+          "warning"
+        );
+      }
     }
   };
+
   return (
     <div className="container">
       <div className="row">
         <div className="col-sm-12">
           <div className="login-container">
-            {/* Login box start */}
             <form onSubmit={handleSubmit}>
               <div className="login-box">
                 <div className="login-form">
                   <div className="login-welcome">
                     BIENVENIDO A LA APP DE BIENES RAICES, <br />
-                    Por favor ingresar con su cuenta 
+                    Por favor ingresar con su cuenta
                   </div>
                   <div className="mb-3">
                     <label className="form-label" htmlFor="uname">
@@ -106,11 +88,12 @@ const Login = () => {
                         Contraseña
                       </label>
                       <a href="/forgot-password" className="btn-link ml-auto">
-                        Olvidaste tu contraseña?
+                        ¿Olvidaste tu contraseña?
                       </a>
                     </div>
                     <input
                       className="form-control"
+                      type="password"
                       placeholder="Contraseña"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -125,8 +108,7 @@ const Login = () => {
                     </button>
                   </div>
                   <div className="login-form-actions">
-                    <button type="submit" className="btn">
-                      {" "}
+                    <button type="button" className="btn">
                       <img
                         src="/public/max/design/assets/images/google.svg"
                         className="login-icon"
@@ -134,8 +116,7 @@ const Login = () => {
                       />
                       Ingresar con Google
                     </button>
-                    <button type="submit" className="btn">
-                      {" "}
+                    <button type="button" className="btn">
                       <img
                         src="/public/max/design/assets/images/facebook.svg"
                         className="login-icon"
@@ -147,18 +128,17 @@ const Login = () => {
 
                   <div className="login-form-footer">
                     <div className="additional-link">
-                      No tienes una cuenta? <a href="/signup">Registrarse</a>
+                      ¿No tienes una cuenta? <a href="/signup">Registrarse</a>
                     </div>
                   </div>
                 </div>
               </div>
             </form>
-            {/* Login box end */}
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Login;
