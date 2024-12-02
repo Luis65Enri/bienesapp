@@ -1,13 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useContextUsuario } from "../componentes/contexto/usuario/UsuarioContext";
 import { mostraAlerta } from "../componentes/alerts/sweetAlert";
+import { useContextUsuario } from "../componentes/contexto/usuario/UsuarioContext";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { setLogin, setCerrarSesion } = useContextUsuario(); // Eliminamos setCerrarSesion para evitar cierre automático
-  const navigate = useNavigate();
+  let navigate = useNavigate();
 
   useEffect(() => {
     setCerrarSesion();
@@ -16,44 +16,47 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        if (username === "" || password === "") {
-            console.log("Complete los campos", "warning");
-            return;
+      if (username === "" || password === "") {
+        console.log("Complete los campos", "warning");
+        return;
+      }
+      const response = await axios.post(
+        "http://localhost:3003/api/usuarios/login",
+        {
+          correo_electronico_usuario: username,
+          contraseña_usuario: password,
         }
-        const response = await axios.post('http://localhost:3003/api/usuarios/login', {
-            correo_electronico_usuario: username,
-            contraseña_usuario: password,
-        });
+      );
 
-        const data = response.data;
+      const data = response.data;
 
-        console.log("Datos de la respuesta recibidos del servidor:", data);
+      console.log("Datos de la respuesta recibidos del servidor:", data);
 
-        const usuario = data.usuario; 
-        const token = data.token; 
+      const usuario = data.usuario;
+      const token = data.token;
 
-        if (!usuario || !token) {
-            throw new Error("Datos de usuario o token no válidos");
-        }
+      if (!usuario || !token) {
+        throw new Error("Datos de usuario o token no válidos");
+      }
 
-        console.log("Bienvenido(a) " + usuario.nombre);
-        console.log("Token:", token);
+      console.log("Bienvenido(a) " + usuario.nombre);
+      console.log("Token:", token);
 
-        await setLogin({ usuario: usuario, token: token });
+      await setLogin({ usuario: usuario, token: token });
 
-        console.log("Redirigiendo a /app/home");
-        navigate('/app/home'); // Redirigir a la ruta deseada
+      console.log("Redirigiendo a /app/home");
+      navigate("/app/home"); // Redirigir a la ruta deseada
     } catch (error) {
-        console.log("Error en la autenticación:", error);
-        if (error.response && Array.isArray(error.response.data)) {
-            error.response.data.forEach((f) => {
-                console.log("Campo: " + f.campo + ". " + f.msj, "warning");
-            });
-        } else {
-            console.log(
-                error.response ? error.response.data.error : "Error en la petición"
-            );
-        }
+      console.log("Error en la autenticación:", error);
+      if (error.response && Array.isArray(error.response.data)) {
+        error.response.data.forEach((f) => {
+          console.log("Campo: " + f.campo + ". " + f.msj, "warning");
+        });
+      } else {
+        console.log(
+          error.response ? error.response.data.error : "Error en la petición"
+        );
+      }
     }
   };
   const handleSubmit2 = async (e) => {
@@ -74,10 +77,7 @@ const Login = () => {
           try {
             var usuario = json.Usuario;
             var token = json.Token;
-            mostraAlerta(
-              "Bienvenido(a) " + usuario.nombre,
-              "success"
-            );
+            mostraAlerta("Bienvenido(a) " + usuario.nombre, "success");
             await setLogin({ usuario: usuario, token: token });
             navigate("/app/home");
           } catch (error) {
