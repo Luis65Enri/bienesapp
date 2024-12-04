@@ -22,7 +22,7 @@ const Header = () => {
                         <div className="search-container">
                             {/* Search input group start */}
                             <div className="input-group">
-                                <input type="text" className="form-control" placeholder="Search" />
+                                <input type="text" className="form-control" placeholder="Buscar" />
                                 <button className="btn" type="button">
                                     <i className="bi bi-search" />
                                 </button>
@@ -79,23 +79,15 @@ const Header = () => {
                                     <div className="country-container">
                                         <a href="index.html">
                                             <i className="bi bi-flag-us fs-5 me-2" />
-                                            English
-                                        </a>
-                                        <a href="index.html">
-                                            <i className="bi bi-flag-in fs-5 me-2" />
-                                            Hindi
+                                            Ingles
                                         </a>
                                         <a href="index.html">
                                             <i className="bi bi-flag-br fs-5 me-2" />
-                                            Portuguese
-                                        </a>
-                                        <a href="index.html">
-                                            <i className="bi bi-flag-tr fs-5 me-2" />
-                                            Turkish
+                                            Portugues
                                         </a>
                                         <a href="index.html">
                                             <i className="bi bi-flag-ca fs-5 me-2" />
-                                            French
+                                            Español
                                         </a>
                                     </div>
                                 </div>
@@ -112,15 +104,15 @@ const Header = () => {
                                     <div className="header-profile-actions">
                                         <a href="profile.html">
                                             <i className="bi bi-person me-2" />
-                                            Profile
+                                            Perfil
                                         </a>
                                         <a href="account-settings.html">
                                             <i className="bi bi-gear me-2" />
-                                            Settings
+                                            Configuracion
                                         </a>
                                         <a href="login.html">
                                             <i className="bi bi-box-arrow-right me-2" />
-                                            Logout
+                                            Cerrar Sesion
                                         </a>
                                     </div>
                                 </div>
