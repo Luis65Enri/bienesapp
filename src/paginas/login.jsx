@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { mostraAlerta } from "../componentes/alerts/sweetAlert";
 import { useContextUsuario } from "../componentes/contexto/usuario/UsuarioContext";
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { setLogin, setCerrarSesion } = useContextUsuario(); // Eliminamos setCerrarSesion para evitar cierre automático
+  const { setLogin, setCerrarSesion } = useContextUsuario();
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -17,100 +18,64 @@ const Login = () => {
     e.preventDefault();
     try {
       if (username === "" || password === "") {
-        console.log("Complete los campos", "warning");
-        return;
-      }
-      const response = await axios.post(
-        "http://localhost:3003/api/usuarios/login",
-        {
-          correo_electronico_usuario: username,
-          contraseña_usuario: password,
-        }
-      );
-
-      const data = response.data;
-
-      console.log("Datos de la respuesta recibidos del servidor:", data);
-
-      const usuario = data.usuario;
-      const token = data.token;
-
-      if (!usuario || !token) {
-        throw new Error("Datos de usuario o token no válidos");
-      }
-
-      console.log("Bienvenido(a) " + usuario.nombre);
-      console.log("Token:", token);
-
-      await setLogin({ usuario: usuario, token: token });
-
-      console.log("Redirigiendo a /app/home");
-      navigate("/app/home"); // Redirigir a la ruta deseada
-    } catch (error) {
-      console.log("Error en la autenticación:", error);
-      if (error.response && Array.isArray(error.response.data)) {
-        error.response.data.forEach((f) => {
-          console.log("Campo: " + f.campo + ". " + f.msj, "warning");
-        });
-      } else {
-        console.log(
-          error.response ? error.response.data.error : "Error en la petición"
-        );
-      }
-    }
-  };
-  const handleSubmit2 = async (e) => {
-    e.preventDefault();
-    try {
-      if (username === "" || password === "") {
         mostraAlerta("Complete los campos", "warning");
         return;
       }
-      await axios
-        .post("http://localhost:3003/api/usuarios/login", {
-          correo_electronico_usuario: username,
-          contraseña_usuario: password,
-        })
-        .then(async (data) => {
-          const json = data.data;
-          console.log(data.data);
-          try {
-            var usuario = json.Usuario;
-            var token = json.Token;
-            mostraAlerta("Bienvenido(a) " + usuario.nombre, "success");
-            await setLogin({ usuario: usuario, token: token });
-            navigate("/app/home");
-          } catch (error) {
-            console.error(error);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          if (Array.isArray(error.response.data)) {
-            error.response.data.msj.forEach((f) => {
-              mostraAlerta("Campo: " + f.campo + ". " + f.msj, "warning");
-            });
-          } else {
-            mostraAlerta(error.response.data.error, "warning");
-          }
-        });
+  
+      const response = await axios.post("http://localhost:3003/api/usuarios/login", {
+        correo_electronico_usuario: username,
+        contraseña_usuario: password,
+      });
+  
+      console.log("Respuesta completa del servidor:", response);
+  
+      const data = response.data;
+      const usuario = data.usuario || data.Usuario; // Asegúrate de capturar el objeto correcto
+      const token = data.token || data.Token;
+  
+      if (!usuario || !token) {
+        console.error("Datos faltantes en la respuesta:", { usuario, token });
+        throw new Error("Datos de usuario o token no válidos");
+      }
+  
+      console.log("Datos del usuario recibido:", usuario);
+  
+      // Accede al nombre del usuario según el campo correcto
+      const nombreUsuario = usuario.nombre_usuario || usuario.nombre || "Usuario";
+  
+      mostraAlerta(`Bienvenido(a) ${nombreUsuario}`, "success");
+  
+      await setLogin({ usuario, token });
+      navigate("/app/home");
     } catch (error) {
-      console.log("Error:", error);
-      mostraAlerta("Error en la petición", "error");
+      console.error("Error en la autenticación:", error);
+  
+      if (error.response && error.response.data) {
+        const errorData = error.response.data;
+        if (Array.isArray(errorData)) {
+          errorData.forEach((f) => {
+            mostraAlerta(`Campo: ${f.campo}. ${f.msj}`, "warning");
+          });
+        } else {
+          mostraAlerta(errorData.error || "Error en la autenticación", "error");
+        }
+      } else {
+        mostraAlerta("Error en la petición al servidor", "error");
+      }
     }
-  };
+  };  
 
   return (
     <div className="container">
       <div className="row">
         <div className="col-sm-12">
           <div className="login-container">
-            <form onSubmit={handleSubmit2}>
+            <form onSubmit={handleSubmit}>
               <div className="login-box">
                 <div className="login-form">
                   <div className="login-welcome">
-                    BIENVENIDO A LA APP DE BIENES RAICES, <br />
-                    Por favor ingresar con su cuenta
+                    BIENVENIDO A LA APP DE BIENES RAÍCES, <br />
+                    Por favor, ingresa con tu cuenta
                   </div>
                   <div className="mb-3">
                     <label className="form-label" htmlFor="uname">
@@ -130,7 +95,7 @@ const Login = () => {
                       <label className="form-label" htmlFor="pwd-input">
                         Contraseña
                       </label>
-                      <a href="/forgot-password" className="btn-link ml-auto">
+                      <a href="/recover" className="btn-link ml-auto">
                         ¿Olvidaste tu contraseña?
                       </a>
                     </div>
@@ -140,6 +105,7 @@ const Login = () => {
                       placeholder="Contraseña"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
+                      autoComplete="current-password"
                     />
                   </div>
                   <div className="login-form-actions">
@@ -168,13 +134,12 @@ const Login = () => {
                   className="login-icon"
                   alt="Login with Facebook"
                 />
-                Ingresa con Facebook
+                Ingresar con Facebook
               </button>
             </div>
-
             <div className="login-form-footer">
               <div className="additional-link">
-                ¿No tienes una cuenta? <a href="*">Registrarse</a>
+                ¿No tienes una cuenta? <a href="/register">Registrarse</a>
               </div>
             </div>
           </div>
