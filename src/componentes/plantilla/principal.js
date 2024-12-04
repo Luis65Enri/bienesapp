@@ -1,21 +1,20 @@
 import React from "react";
-import Sidebar from "../plantilla/sidebar";
+import Footer from "../plantilla/footer";
 import Header from "../plantilla/header";
 import Script from "../plantilla/script";
-import Footer from "../plantilla/footer";
+import Sidebar from "../plantilla/sidebar";
 import Wrapper from "../plantilla/wrapper";
 
-function Principal() {
+const Principal = () => {
     return (
-    <React.StrictMode>
-        <Wrapper>
-        <Sidebar />
-        <Header />
-        <Footer />
-        <Script />
-        </Wrapper>
-    </React.StrictMode>
+        <React.StrictMode>
+            <Wrapper>
+                <Sidebar />
+                <Header />
+                <Footer />
+                <Script />
+            </Wrapper>
+        </React.StrictMode>
     );
 }
-
 export default Principal;
