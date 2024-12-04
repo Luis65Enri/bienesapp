@@ -3,6 +3,7 @@ import { Navigate, Route, createBrowserRouter, createRoutesFromElements } from '
 import PageHome from '../componentes/plantilla/PageHome';
 import Login from '../paginas/login';
 import { AutenticacionRoute } from './AutenticacionRoute';
+import Product from '../componentes/plantilla/Product';
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -11,9 +12,14 @@ export const routes = createBrowserRouter(
     
       <Route path="app/" element={<AutenticacionRoute />}>
         
-        <Route path="home" element={<PageHome />} />
+      <Route path="home" element={<PageHome />} />
+
+      <Route path= '/Product' element={ <Product />} />  // Ruta de Product
+  
       </Route>
+      
       <Route path='*' element={<Navigate to="/login" />} />
+      <Route path='*' element={<Navigate to="/Product" />} />
     </Route>
   ),
   {

@@ -1,4 +1,6 @@
 import React from "react";
+import { Form, Button, Col, Row, InputGroup } from 'react-bootstrap';
+import { useDropzone } from 'react-dropzone'
 
 const Footer = () => {
   return (
