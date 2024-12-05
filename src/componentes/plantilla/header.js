@@ -14,7 +14,7 @@ const Header = () => {
             <i className="bi bi-house" />
           </li>
           <li className="breadcrumb-item breadcrumb-active" aria-current="page">
-            Pricing
+            /
           </li>
         </ol>
         {/* Breadcrumb end */}
@@ -24,7 +24,7 @@ const Header = () => {
           <div className="search-container">
             {/* Search input group start */}
             <div className="input-group">
-              <input type="text" className="form-control" placeholder="Search" />
+              <input type="text" className="form-control" placeholder="Buscar" />
               <button className="btn" type="button">
                 <i className="bi bi-search" />
               </button>
@@ -97,9 +97,9 @@ const Header = () => {
                 aria-labelledby="userSettings"
               >
                 <div className="header-profile-actions">
-                  <a href="profile.html">Profile</a>
-                  <a href="account-settings.html">Settings</a>
-                  <a href="login.html">Logout</a>
+                  <a href="profile.html">Perfil</a>
+                  <a href="account-settings.html">Configuraciones</a>
+                  <a href="login.html">Cerrar Sesion</a>
                 </div>
               </div>
             </li>

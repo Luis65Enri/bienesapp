@@ -1,7 +1,5 @@
 import React from "react";
 
-import React from "react";
-
 const Card = () => {
     return (
         <div className="main-container">
@@ -101,10 +99,10 @@ const Card = () => {
                     aria-labelledby="userSettings"
                 >
                     <a href="profile.html" className="dropdown-item">
-                    Profile
+                    Perfil
                     </a>
                     <a href="account-settings.html" className="dropdown-item">
-                    Settings
+                    Configuracion
                     </a>
                     <a href="login.html" className="dropdown-item">
                     Logout
