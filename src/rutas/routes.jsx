@@ -2,6 +2,8 @@ import React from 'react';
 import { Navigate, Route, createBrowserRouter, createRoutesFromElements } from 'react-router-dom';
 import PageHome from '../componentes/plantilla/PageHome';
 import Login from '../paginas/login';
+import Register from '../paginas/Register';
+import Recover from '../paginas/Recover';
 import { AutenticacionRoute } from './AutenticacionRoute';
 import CategoriaPropiedad from '../paginas/CategoriaPropiedad';
 import Contratos from '../paginas/Contratos';
@@ -13,8 +15,9 @@ import Ventas from '../paginas/Ventas';
 export const routes = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route path='/login' element={<Login />} />
-    
+      <Route path='login' element={<Login />} />
+      <Route path='register' element={<Register />} />
+      <Route path='recover' element={<Recover />} />
       <Route path="app/" element={<AutenticacionRoute />}>
         <Route path="home" element={<PageHome />} />
         <Route path="detalle" element={<detallesfacturacion />} />
