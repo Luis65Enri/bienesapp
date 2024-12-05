@@ -1,7 +1,66 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Sidebar from '../componentes/plantilla/sidebar-wapper';
 
 const Propiedad = () => {
+    const [nombre, setNombre] = useState("");
+    const [categoria, setCategoria] = useState("");
+    const [precio, setPrecio] = useState("");
+    const [dimension, setDimension] = useState("");
+    const [descripcion, setDescripcion] = useState("");
+    const [estado, setEstado] = useState("");
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            // Validar campos vacíos
+            if (
+                nombre === "" ||
+                categoria === "" ||
+                precio === "" ||
+                descuento === "" ||
+                descripcion === "" ||
+                estado === ""
+            ) {
+                mostrarAlerta("Complete los campos vacíos", "warning");
+                return;
+            }
+    
+            // Hacer la solicitud POST
+            const response = await AxiosPublico.post(propiedadguardar, {
+                nombre: nombre,
+                precio: precio,
+                dimension: dimension,
+                descripcion: descripcion,
+                estado: estado,
+            });
+    
+            // Manejar la respuesta de la solicitud
+            const data = response.data;
+            console.log(data);
+    
+            // Mostrar mensaje de éxito y realizar alguna acción adicional
+            mostrarAlerta("Propiedad guardada exitosamente", "success");
+    
+            // Opcional: Limpiar los campos después de guardar
+            setNombre("");
+            setCategoria("");
+            setPrecio("");
+            setDescuento("");
+            setDescripcion("");
+            setEstado("");
+            setDimension("");
+    
+            // Redirigir o realizar otra acción
+            if (onSuccess) {
+                onSuccess(); // Si pasas un callback `onSuccess` para manejar el éxito
+            }
+        } catch (error) {
+            // Manejo de errores
+            console.error("Error al guardar la propiedad:", error);
+            mostrarAlerta("Hubo un error al guardar la propiedad. Intente nuevamente.", "error");
+        }
+    };
+    
     return (
         <div className="d-flex">
             {/* Sidebar */}
@@ -61,6 +120,18 @@ const Propiedad = () => {
                             <div className="col-sm-6">
                                 <div className="mb-3">
                                 <label className="form-label">
+                                    Estado<span className="text-red">*</span>
+                                </label>
+                                <select className="form-control">
+                                    <option value="">Seleccione el estado</option>
+                                    <option value="Mobiles">Vendida</option>
+                                    <option value="Books">Disponible</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div className="col-sm-6">
+                                <div className="mb-3">
+                                <label className="form-label">
                                     Precio de la propiedad <span className="text-red">*</span>
                                 </label>
                                 <input
@@ -72,14 +143,14 @@ const Propiedad = () => {
                             </div>
                             <div className="col-sm-6">
                                 <div className="mb-3">
-                                <label className="form-label">Descuento</label>
+                                <label className="form-label">Dimensión</label>
                                 <div className="input-group">
                                     <input
                                     type="text"
                                     className="form-control"
-                                    placeholder="Ingrese el descuento de la propiedad"
+                                    placeholder="Ingrese la dimensión de la propiedad"
                                     />
-                                    <span className="input-group-text">%</span>
+                                    <span className="input-group-text"> </span>
                                 </div>
                                 </div>
                             </div>
