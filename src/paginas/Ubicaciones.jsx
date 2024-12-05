@@ -17,14 +17,74 @@ const Ubicaciones = () => {
                 <p>
                     Este es el contenido relacionado con las ubicaciones.
                 </p>
-                {/* <RegistroCliente
-                    position={position}
-                    setPosition={setPosition}
-                    direcciones={direcciones}
-                    setDirecciones={setDirecciones}
-                    isModalOpen={isModalOpen}
-                    setIsModalOpen={setIsModalOpen}
-/> */}
+                <div className="content-wrapper-scroll">
+                    {/* Content wrapper */}
+                    <div className="content-wrapper">
+                        {/* Row */}
+                        <div className="row gx-3">
+                            <div className="col-sm-12">
+                                <div className="card">
+                                    <div className="card-header">
+                                        <div className="card-title">Información de la Ubicación</div>
+                                    </div>
+                                    <div className="card-body">
+                                        <div className="row gx-3">
+                                            {/* Información de la Ubicación */}
+                                            <div className="col-sm-6">
+                                                <div className="mb-3">
+                                                    <label className="form-label">
+                                                        Nombre de la Zona <span className="text-red">*</span>
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Ingrese el nombre de la zona"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="col-sm-6">
+                                                <div className="mb-3">
+                                                    <label className="form-label">
+                                                        Ciudad <span className="text-red">*</span>
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Ingrese el nombre de la ciudad"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="col-sm-6">
+                                                <div className="mb-3">
+                                                    <label className="form-label">
+                                                        Departamento <span className="text-red">*</span>
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="Ingrese el nombre del departamento"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {/* Botones */}
+                                            <div className="col-sm-12">
+                                                <div className="custom-btn-group flex-end">
+                                                    <button type="button" className="btn btn-light">
+                                                        Cancelar
+                                                    </button>
+                                                    <button type="button" className="btn btn-success">
+                                                        Registrar Ubicación
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );
