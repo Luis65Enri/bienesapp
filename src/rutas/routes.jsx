@@ -5,7 +5,6 @@ import Login from '../paginas/login';
 import { AutenticacionRoute } from './AutenticacionRoute';
 import CategoriaPropiedad from '../paginas/CategoriaPropiedad';
 import Contratos from '../paginas/Contratos';
-import Documentos from '../paginas/Documentos';
 import Pagos from '../paginas/Pagos';
 import Propiedad from '../paginas/Propiedad';
 import Ubicaciones from '../paginas/Ubicaciones';
@@ -21,7 +20,6 @@ export const routes = createBrowserRouter(
         <Route path="detalle" element={<detallesfacturacion />} />
         <Route path="contratos" element={<Contratos />} />
         <Route path="categoria" element={<CategoriaPropiedad />} />
-        <Route path="documentos" element={<Documentos />} />
         <Route path="pagos" element={<Pagos />} />
         <Route path="propiedad" element={<Propiedad />} />
         <Route path="ubicaciones" element={<Ubicaciones />} />

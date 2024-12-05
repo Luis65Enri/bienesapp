@@ -46,12 +46,6 @@ const Sidebar = () => {
                             </a>
                         </li>
                         <li className="sidebar-dropdown mb-2">
-                            <a href="documentos" className="text-decoration-none d-flex align-items-center">
-                                <i className="bi bi-folder me-2" />
-                                <span className="menu-text">Documentos</span>
-                            </a>
-                        </li>
-                        <li className="sidebar-dropdown mb-2">
                             <a href="pagos" className="text-decoration-none d-flex align-items-center">
                                 <i className="bi bi-credit-card me-2" />
                                 <span className="menu-text">Pagos</span>

@@ -110,7 +110,7 @@ const Login = () => {
                 <div className="login-form">
                   <div className="login-welcome">
                     BIENVENIDO A LA APP DE BIENES RAICES, <br />
-                    Por favor ingresar con su cuenta
+                    Por favor ingresar con su usuario
                   </div>
                   <div className="mb-3">
                     <label className="form-label" htmlFor="uname">
@@ -147,36 +147,34 @@ const Login = () => {
                       <span className="icon">
                         <i className="bi bi-arrow-right-circle" />
                       </span>
-                      Login
+                      Ingresar
                     </button>
                   </div>
                 </div>
               </div>
             </form>
-            <div className="login-form-actions">
+            {/* <div className="login-form-actions">
               <button type="button" className="btn">
                 <img
                   src="/public/max/design/assets/images/google.svg"
                   className="login-icon"
-                  alt="Login with Google"
+                  alt="Ingresar con Google"
                 />
-                Ingresar con Google
               </button>
               <button type="button" className="btn">
                 <img
-                  src="/public/max/design/assets/images/facebook.svg"
+                src="/public/max/design/assets/images/facebook.svg"
                   className="login-icon"
-                  alt="Login with Facebook"
+                  alt="Regristrarse Con Facebook"
                 />
-                Ingresa con Facebook
               </button>
-            </div>
+            </div> */}
 
-            <div className="login-form-footer">
+            {/* <div className="login-form-footer">
               <div className="additional-link">
                 ¿No tienes una cuenta? <a href="*">Registrarse</a>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

@@ -1,6 +1,8 @@
 import React from 'react';
 import Sidebar from '../componentes/plantilla/sidebar-wapper';
 
+
+
 const Ubicaciones = () => {
     return (
         <div className="d-flex">
@@ -15,6 +17,14 @@ const Ubicaciones = () => {
                 <p>
                     Este es el contenido relacionado con las ubicaciones.
                 </p>
+                {/* <RegistroCliente
+                    position={position}
+                    setPosition={setPosition}
+                    direcciones={direcciones}
+                    setDirecciones={setDirecciones}
+                    isModalOpen={isModalOpen}
+                    setIsModalOpen={setIsModalOpen}
+/> */}
             </div>
         </div>
     );
